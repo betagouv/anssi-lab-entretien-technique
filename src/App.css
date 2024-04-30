@@ -1,0 +1,11 @@
+#root {
+  width: 1000px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.card {
+  padding-top: 10px;
+}
