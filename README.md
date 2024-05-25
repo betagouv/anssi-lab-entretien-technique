@@ -8,9 +8,10 @@ Une app qui charge la météo de l'emplacement actuel du navigateur.
 Le code présente pas mal de défauts… Le premier étant qu'il n'est pas terminé.
 
 ## 🧰 Techno
-Il s'agit d'une app React / Vite / Typescript créée via [la ligne de commande Vite](https://vitejs.dev/guide/).
 
-Prettier est également présent et peut être lancé manuellement. 
+Il s'agit d'une app Svelte / Vite / Typescript créée via [la ligne de commande Vite](https://vitejs.dev/guide/).
+
+Prettier est également présent et peut être lancé manuellement.
 
 ## 📝 Objectifs
 
