@@ -7,12 +7,16 @@ type Position = {
   precision: number;
 };
 
+type Prevision = {
+  temperature: number,
+  date : string
+}
+
 function App() {
   const [position, setPosition] = useState<Position | undefined>();
-  const [testMeteo, setTestMeteo] = useState({
-    temperature: 0,
-    date: ""
-  });
+  const [meteo, setMeteo] = useState<Prevision[]>(
+    []
+  );
 
 
 
@@ -38,10 +42,14 @@ function App() {
         .then((res) => res.json())
         .then((json) => {
           console.log(json);
-          setTestMeteo({
-            temperature: json.hourly.temperature_2m[0],
-            date: json.hourly.time[0],
-          });
+          let arr: Prevision[] = []
+          for(let i = 0; i < 24; i++){
+            arr.push({
+              temperature: json.hourly.temperature_2m[i],
+              date: json.hourly.time[i],
+            });
+          }
+          setMeteo(arr)
         });
     }
   }, [position]);
@@ -62,8 +70,7 @@ function App() {
       </div>
       <div>
         <h2>Prévisions Météo</h2>…
-        <p>{testMeteo.temperature}</p>
-        <p>{testMeteo.date}</p>
+        {meteo.map((m, index) => <div key={index}><p>{m.date}</p><p>{m.temperature}</p></div> )}
       </div>
     </>
   );
