@@ -9,3 +9,4 @@ Pytest est également présent et peut être lancé via la commande `pytest`.
 ## 📝 Objectifs
 
 - Travailler en binôme ou mob avec les futurs collègues.
+- Lancer, puis faire passer `xtest_sait_dire_bonjour_au_candidat`
