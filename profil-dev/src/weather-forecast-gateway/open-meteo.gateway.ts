@@ -34,8 +34,8 @@ export class OpenMeteoGateway implements WeatherForecast {
             time: json.hourly.time[i],
             tempInCelcius: json.hourly.temperature_2m[i],
           });
-
         }
+
         return { data };
       });
 

@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import type { Forecast, WeatherForecast } from "./weather-forecast-gateway";
-  import { OpenMeteoGateway } from "./weather-forecast-gateway/open-meteo.gateway";
+
+  export let weatherForecastGateway: WeatherForecast;
 
   type Position = {
     latitude: number;
@@ -9,7 +10,6 @@
     precision: number;
   };
 
-  let weatherForecastGateway: WeatherForecast = new OpenMeteoGateway();
   let weather: Forecast;
 
   let position: Position;
