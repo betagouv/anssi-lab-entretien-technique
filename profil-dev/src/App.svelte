@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import type { Forecast, WeatherForecast } from "./weather-forecast-gateway";
+  import { OpenMeteoGateway } from "./weather-forecast-gateway/open-meteo.gateway";
 
   type Position = {
     latitude: number;
@@ -7,26 +9,10 @@
     precision: number;
   };
 
-  type WeatherResponse = {
-    latitude: number;
-    longitude: number;
-    generationtime_ms: number;
-    utc_offset_seconds: number;
-    timezone: string;
-    timezone_abbreviation: string;
-    elevation: number;
-    hourly_units: {
-      time: string;
-      temperature_2m: string;
-    };
-    hourly: {
-      time: string[];
-      temperature_2m: number[];
-    };
-  };
+  let weatherForecastGateway: WeatherForecast = new OpenMeteoGateway();
+  let weather: Forecast;
 
   let position: Position;
-  let weather: WeatherResponse;
 
   onMount(() => {
     navigator.geolocation.getCurrentPosition(
@@ -42,17 +28,19 @@
   });
 
   $: {
-    if (position)
+    if (position) {
       // https://open-meteo.com/en/docs/meteofrance-api
-      fetch(
-        `https://api.open-meteo.com/v1/meteofrance?latitude=${position.latitude}&longitude=${position.longitude}&hourly=temperature_2m&timezone=Europe%2FBerlin`,
-      )
-        .then((res) => res.json())
-        .then((json) => {
-          console.log(json);
-          weather = json;
+      async function getForecast() {
+        try {
+          const result = await weatherForecastGateway.getForecast(position);
+          weather = result;
+        } catch (_) {
+          console.error("oupsie");
         }
-        );
+      }
+
+      getForecast()
+    }
   }
 </script>
 
@@ -69,14 +57,11 @@
   </div>
   <div>
     <h2>Prévisions Météo</h2>
-    {#if weather }
-      timezone: {weather.timezone}
-      <br>
-
-      {#each {length: 10} as _toto, i}
-      <span>time: {weather.hourly.time[i]}</span>
-      <span>temperature: {weather.hourly.temperature_2m[i]}°C</span>
-      <br>
+    {#if weather}
+      {#each weather.data as forecast }
+        <span>time: {forecast.time}</span>
+        <span>temperature: {forecast.tempInCelcius}°C</span>
+        <br />
       {/each}
     {:else}
       ...
